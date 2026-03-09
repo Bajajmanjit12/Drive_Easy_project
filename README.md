@@ -301,30 +301,24 @@ void loop()
 
   delay(500);
 }
-Hardware Connections
-| Module      | ESP32 Pin |
-| ----------- | --------- |
-| MQ3 D0      | GPIO34    |
-| IR Sensor   | GPIO27    |
-| Buzzer      | GPIO25    |
-| MPU6050 SDA | GPIO21    |
-| MPU6050 SCL | GPIO22    |
+---
 
-**Development Tools**
+ 
+# **Development Tools**
 Arduino IDE
 ESP32 Board Support Package
 Embedded C/C++
 Serial Monitor for debugging
-
-**Future Improvements**
+ ---
+# **Future Improvements**
 Possible improvements include:
 AI-based camera drowsiness detection
 Cloud monitoring dashboard
 Mobile application integration
 Real-time accident reporting system
 Improved battery management
-
-**References**
+---
+# **References**
 
 MQ Sensors Library
 https://github.com/miguel5612/MQSensorsLib
