@@ -289,3 +289,52 @@ IEEE Transactions on Intelligent Transportation Systems
 
 MQ-3 Alcohol Sensor Datasheet
 Hanwei Electronics
+
+---
+
+# Authors
+
+- **Manjit Bajaj**
+- Github: https://github.com/Bajajmanjit12
+  Firmware Developer  
+  Department of Computer Engineering  
+  Sanjivani College of Engineering, Kopargaon  
+
+- **Anjali**  
+  Hardware Lead  
+  Responsible for sensor connections, module mounting, and ensuring stable hardware operation.
+
+- **Shraddha**  
+  Testing & Safety  
+  Responsible for full system testing, assisting in mounting, conducting market research, and performing system simulations.
+
+- **Arti**  
+  Communication Lead  
+  Responsible for GSM integration, SMS alert development, GPS handling, and minimizing false crash detection.
+
+- **Nikita**  
+  Dashboard Developer  
+  Responsible for dashboard development (optional), displaying alert data, and supporting system testing and research.
+
+---
+
+# Collaborators
+
+The following team members contributed to the development of this project:
+
+- **Manjit Bajaj** – Firmware development, sensor integration, and system logic design  
+- **Anjali** – Hardware setup, wiring, and sensor mounting  
+- **Shraddha** – System testing, safety validation, and simulations  
+- **Arti** – GSM communication, GPS integration, and emergency alert system  
+- **Nikita** – Dashboard development and research support  
+
+---
+
+# Acknowledgements
+
+We would like to thank the faculty members and mentors of  
+**Sanjivani College of Engineering, Kopargaon** for their guidance and support in completing this project.
+
+Special thanks to the open-source community for providing libraries, documentation, and development resources used in this project.
+
+---
