@@ -249,77 +249,24 @@ Repeat continuously
 
 ---
 
-# Example ESP32 Firmware Code
-
-```cpp
-#include <Wire.h>
-#include <MPU6050.h>
-
-#define MQ3_PIN 34
-#define IR_PIN 27
-#define BUZZER 25
-
-MPU6050 mpu;
-
-void setup()
-{
-  Serial.begin(115200);
-
-  pinMode(MQ3_PIN, INPUT);
-  pinMode(IR_PIN, INPUT);
-  pinMode(BUZZER, OUTPUT);
-
-  Wire.begin();
-  mpu.initialize();
-}
-
-void loop()
-{
-  int alcohol = digitalRead(MQ3_PIN);
-  int eye = digitalRead(IR_PIN);
-
-  if(alcohol == HIGH)
-  {
-    Serial.println("Alcohol detected");
-    digitalWrite(BUZZER,HIGH);
-  }
-
-  if(eye == HIGH)
-  {
-    Serial.println("Eye closed");
-  }
-
-  int16_t ax, ay, az;
-  mpu.getAcceleration(&ax,&ay,&az);
-
-  float A = sqrt(ax*ax + ay*ay + az*az)/16384.0;
-
-  if(A > 3)
-  {
-    Serial.println("Crash detected");
-  }
-
-  delay(500);
-}
+# Development Tools
 ---
-
- 
-# **Development Tools**
 Arduino IDE
 ESP32 Board Support Package
 Embedded C/C++
 Serial Monitor for debugging
- ---
-# **Future Improvements**
+
+# Future Improvements
+---
 Possible improvements include:
 AI-based camera drowsiness detection
 Cloud monitoring dashboard
 Mobile application integration
 Real-time accident reporting system
 Improved battery management
----
-# **References**
 
+# References
+---
 MQ Sensors Library
 https://github.com/miguel5612/MQSensorsLib
 
@@ -332,8 +279,8 @@ https://github.com/Arduinolibrary/IR-Eye-Blink-Sensor
 Smart Helmet IoT Project Example
 https://github.com/IoT-Projects-Ideas/Smart-Helmet-IOT
 
-Research Papers
-
+# Research Papers
+---
 Automatic Motorcycle Accident Detection Using Accelerometer and GPS
 IEEE Intelligent Transportation Systems Conference
 
