@@ -1,0 +1,32 @@
+Required Arduino Libraries for RIDESENSE-X
+
+1. WiFi
+   Purpose:
+   Provides Wi-Fi connectivity for ESP32 communication.
+
+2. HTTPClient
+   Purpose:
+   Used for HTTP GET and POST requests between ESP32 and Flask server.
+
+3. WiFiClientSecure
+   Purpose:
+   Enables secure HTTPS communication for Telegram Bot API.
+
+4. Wire
+   Purpose:
+   Supports I2C communication for MPU6050 sensor.
+
+5. Adafruit MPU6050
+   Purpose:
+   Interface library for MPU6050 accelerometer and gyroscope sensor.
+
+6. Adafruit Unified Sensor
+   Purpose:
+   Common sensor abstraction library required by MPU6050 library.
+
+7. TinyGPSPlus
+   Purpose:
+   Processes GPS latitude and longitude data from Neo-6M GPS module.
+
+Libraries Installation Source:
+Arduino IDE → Library Manager
