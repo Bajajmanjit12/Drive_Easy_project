@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart Helmet Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #eef2f7;
+}
+
+/* HEADER */
+.header {
+    padding: 20px 40px;
+    font-size: 22px;
+    font-weight: 600;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+/* LAYOUT */
+.container {
+    padding: 25px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: 0.2s;
+    border: 1px solid #e5e7eb;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* VALUE */
+.value {
+    font-size: 28px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* STATUS */
+.status {
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.safe { color: #16a34a; }
+.danger { color: #dc2626; }
+
+/* MAP */
+#map {
+    height: 300px;
+    margin-top: 25px;
+    border-radius: 10px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    margin-top: 25px;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+th {
+    background: #f8fafc;
+}
+
+/* CHART */
+.chart-box {
+    margin-top: 25px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header"> Smart Helmet Monitoring Dashboard</div>
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card">
+<h4>Alcohol</h4>
+<div id="alcohol" class="value">0</div>
+<div id="alcoholStatus" class="status safe">Safe</div>
+</div>
+
+<div class="card">
+<h4>Drowsiness</h4>
+<div id="drowsiness" class="value">0</div>
+<div id="drowsinessStatus" class="status safe">Safe</div>
+</div>
+
+<div class="card">
+<h4>Crash</h4>
+<div id="crash" class="value">0</div>
+<div id="crashStatus" class="status safe">No Incident</div>
+</div>
+
+<div class="card">
+<h4>Location</h4>
+<div id="location">--</div>
+</div>
+
+</div>
+
+<div class="chart-box">
+<canvas id="chart"></canvas>
+</div>
+
+<div id="map"></div>
+
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Alcohol</th>
+<th>Drowsiness</th>
+<th>Crash</th>
+</tr>
+</thead>
+<tbody id="history"></tbody>
+</table>
+
+</div>
+
+<script>
+
+// MAP
+let map = L.map('map').setView([19.1, 74.4], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+let marker = L.marker([19.1, 74.4]).addTo(map);
+
+// CHART
+let chart = new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [
+            { label: "Crash", data: [] },
+            { label: "Drowsiness", data: [] },
+            { label: "Alcohol", data: [] }
+        ]
+    }
+});
+
+// STATUS FUNCTION
+function setStatus(id, statusId, value) {
+    let el = document.getElementById(id);
+    let status = document.getElementById(statusId);
+
+    el.innerText = value;
+
+    if (value == 1) {
+        el.className = "value danger";
+        status.className = "status danger";
+        status.innerText = "Alert";
+    } else {
+        el.className = "value safe";
+        status.className = "status safe";
+        status.innerText = "Safe";
+    }
+}
+
+// UPDATE UI
+function updateUI(data) {
+
+    setStatus("alcohol", "alcoholStatus", data.alcohol);
+    setStatus("drowsiness", "drowsinessStatus", data.drowsiness);
+
+    let crashStatus = document.getElementById("crashStatus");
+
+    document.getElementById("crash").innerText = data.crash;
+
+    if (data.crash == 1) {
+        document.getElementById("crash").className = "value danger";
+        crashStatus.className = "status danger";
+        crashStatus.innerText = "Accident!";
+    } else {
+        document.getElementById("crash").className = "value safe";
+        crashStatus.className = "status safe";
+        crashStatus.innerText = "No Incident";
+    }
+
+    // LOCATION
+    document.getElementById("location").innerText =
+        data.latitude + ", " + data.longitude;
+
+    // MAP UPDATE (ALWAYS)
+    marker.setLatLng([data.latitude, data.longitude]);
+    map.setView([data.latitude, data.longitude]);
+
+    // CHART
+    chart.data.labels.push("");
+    chart.data.datasets[0].data.push(data.crash);
+    chart.data.datasets[1].data.push(data.drowsiness);
+    chart.data.datasets[2].data.push(data.alcohol);
+
+    if (chart.data.labels.length > 20) {
+        chart.data.labels.shift();
+        chart.data.datasets.forEach(ds => ds.data.shift());
+    }
+
+    chart.update();
+}
+
+// FETCH
+function fetchData() {
+    fetch("http://10.209.119.196:5000/data")
+    .then(res => res.json())
+    .then(updateUI);
+}
+
+
+setInterval(() => {
+    fetchData();
+    fetchHistory();
+}, 2000);
+
+</script>
+
+</body>
+</html>
